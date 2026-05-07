@@ -17,15 +17,10 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
-
 library(tinytable)
 library(tidyverse)
-library(palmerpenguins)
 
-library(usethis) 
-library(gitcreds)
-
-raw_data <- read_csv(here::here("data/01-raw_data/raw_data.csv"))
+analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
 ```
 
 
@@ -50,9 +45,18 @@ Telegraphing paragraph: The remainder of this paper is structured as follows. @s
 We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
 
 ```{r}
-raw_data %>% 
-  count(Final_Incident_Type) %>% 
-  knitr::kable()
+analysis_data |>
+  mutate(occupancy_month = month(
+    occupancy_date,
+    label = TRUE,
+    abbr = FALSE
+  )) |>
+  arrange(month(occupancy_date)) |>
+  drop_na(occupied_beds) |>
+  summarise(number_occupied = mean(occupied_beds),
+            .by = occupancy_month) |>
+  tt() |> 
+  format_tt(escape = TRUE)
 ```
 
 Overview text
@@ -69,40 +73,10 @@ Add graphs, tables and text. Use sub-sub-headings for each outcome variable or u
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
 Talk more about it.
 
 And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
 
 Talk way more about it. 
 
