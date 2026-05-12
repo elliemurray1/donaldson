@@ -32,13 +32,9 @@ In this paper we explore patterns of shelter occupancy based on the data from To
 
 The initial analysis indicates high shelter occupancy rates all year round. While there is some variation between months, like slightly higher occupancy rates during the spring months compared to winter months, there are no significant fluctuations. Although there are not dramatic differences in occupancy rates each month, the consistent high rates make the demand for shelter services in Toronto clear.
 
-Understanding the patterns of shelter occupancy is is crucial for policymakers and urban planners. By examining how occupancy rates change over time, resources can be more efficiently utilized and emergency shelter planning can be more effective (Government of Canada, 2022). Shelter occupancy can also contribute to larger conversations surrounding the affordable housing crisis, as they are interconnected (City of Toronto, 2024).
+Understanding the patterns of shelter occupancy is crucial for policymakers and urban planners. By examining how occupancy rates change over time, resources can be more efficiently utilized and emergency shelter planning can be more effective (Government of Canada, 2022). Shelter occupancy can also contribute to larger conversations surrounding the affordable housing crisis, as they are interconnected (City of Toronto, 2024).
 
 The remainder of this paper is structured as follows. Section 2 describes the data and measurement process. Section 3 discusses the results and implications of the analysis. @sec-data....
-
-
-
-
 
 
 # Data {#sec-data}
@@ -61,7 +57,7 @@ This data offers insight into the need for shelter infrastructure in Toronto, bu
 
 ## Outcome variables
 
-```{r}
+```{r echo=FALSE}
 analysis_data |>
   mutate(occupancy_month = month(
     occupancy_date,
