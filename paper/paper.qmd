@@ -1,15 +1,18 @@
 ---
 title: "Exploring Shelter Occupancy in Toronto"
-subtitle: "My subtitle if needed"
 author: 
   - Ellie Murray
 thanks: "Code and data are available at: https://github.com/elliemurray1/donaldson"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper examines patterns of shelter occupancy in Toronto and highlights the pressure placed on the shelter system. The City of Toronto’s Daily Shelter & Overnight Service Occupancy & Capacity datasets for 2025 and 2026 were analyzed in R to determine monthly averages of occupied beds and occupancy rates in shelters across Toronto. The analysis showed consistently high occupancy rates over both years and minimal seasonal variation. These results suggest that Toronto's shelter infrastructure does not adequately meet the need, and more extensive measures must be put in place to address homelessness in Toronto."
 format: pdf
 number-sections: true
 bibliography: references.bib
+echo: false
+warning: false
+message: false
+toc: true
 ---
 
 ```{r}
@@ -19,109 +22,247 @@ bibliography: references.bib
 
 library(tinytable)
 library(tidyverse)
+library(here)
 
-analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
+
+data2025 <- read_csv(here("data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv"))
+data2026 <- read_csv(here("data/Daily shelter overnight occupancy (4).csv"))
+
+data2026 <- data2026 %>%
+  mutate(
+    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
+    month = floor_date(OCCUPANCY_DATE, "month"),
+    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
+  ) %>%
+  filter(!is.na(OCCUPIED_BEDS)) %>%
+  mutate(month_label = format(month, "%b %Y"))
+
+
+data2025 <- data2025 %>%
+  mutate(
+    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
+    month = floor_date(OCCUPANCY_DATE, "month"),
+    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
+  ) %>%
+  filter(!is.na(OCCUPIED_BEDS)) %>%
+  mutate(month_label = format(month, "%b %Y"))
 ```
 
+\newpage
 
 # Introduction
 
-Toronto has been facing a growing homelessness issue in recent years, increasing the pressure on the shelter system in place. The current homelessness crisis can be credited to the limited availability of affordable housing, economic instability, and access to healthcare. According to the most recent Street Needs Assessment in 2025, from the city of Toronto, it is estimated that 12,196 people were experiencing homelessness, compared to 7,300 people in 2021. As a result, shelter availability is becoming an increasingly more important issue (City of Toronto, 2025).
+Toronto has been facing a growing challenge with homelessness in recent years, increasing the pressure on the shelter system in place. The current homelessness crisis can be attributed to the limited availability of affordable housing, economic instability, and access to healthcare. According to the most recent Street Needs Assessment in 2025 from the city of Toronto, it is estimated that 12,196 people were experiencing homelessness, compared to 7,300 people in 2021. This suggests shelter availability may be becoming an increasingly more important issue (City of Toronto, 2025).
 
-In this paper we explore patterns of shelter occupancy based on the data from Toronto Shelter & Support Services (2025). The analysis focuses on the number of occupied beds for individual shelter systems in Toronto. In order to examine the correlation between seasonal variation and average shelter occupancy, monthly averages of occupied beds are used. While shelter occupancy does not take into account all homelessness in Toronto, it does provide some insight into the necessary shelter infrastructure required in Toronto. 
+Homelessness rates are difficult to measure directly as they are not always well documented. Moreover, the homelessness population does not all access shelters resources for variable reasons. However proxy measures, such as shelter use, support a better understanding of homelessness need and infrastructure utilization (Bird et al., 2025). 
 
-The initial analysis indicates high shelter occupancy rates all year round. While there is some variation between months, like slightly higher occupancy rates during the spring months compared to winter months, there are no significant fluctuations. Although there are not dramatic differences in occupancy rates each month, the consistent high rates make the demand for shelter services in Toronto clear.
+According to the 2024 Canadian shelter capacity report the number of permanent emergency shelter beds increased between 2023 and 2024 and had exceeded pre pandemic numbers. This is a positive development but we are still uncertain whether this capacity is ample, whether there are seasonal needs and whether the available resources address what the homelessness crisis demands. (Government of Canada, 2025)
 
-Understanding the patterns of shelter occupancy is crucial for policymakers and urban planners. By examining how occupancy rates change over time, resources can be more efficiently utilized and emergency shelter planning can be more effective (Government of Canada, 2022). Shelter occupancy can also contribute to larger conversations surrounding the affordable housing crisis, as they are interconnected (City of Toronto, 2024).
+Understanding the patterns of shelter occupancy is crucial for policymakers. By examining how occupancy rates change over time, resources can be more efficiently utilized and emergency shelter planning can be more effective (Government of Canada, 2022). Shelter occupancy can also contribute to larger conversations surrounding the affordable housing crisis, as they are interconnected (City of Toronto, 2024).
 
-The remainder of this paper is structured as follows. Section 2 describes the data and measurement process. Section 3 discusses the results and implications of the analysis. @sec-data....
+In this paper we explore more recent patterns of shelter occupancy in Toronto based on the data spanning 2025 and 2026 from Toronto Shelter & Support Services. The analysis investigates the number of occupied beds and occupancy rates across the individual shelters in Toronto. While shelter occupancy may not accurately reflect homelessness in Toronto, it does provide some insight into whether there is sufficient infrastructure available for those who access it. (Toronto Shelter & Support Services, 2026)
 
-
-# Data {#sec-data}
-
-## Overview
-
-We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
+The remainder of this paper is structured as follows. Section 2 describes the data and and methodology used, section 3 provides the analysis results, and section 4 discusses the implications of the results. 
 
 
-This paper uses data from the City of Toronto’s Daily Shelter & Overnight Service Occupancy & Capacity data set, which is available through Toronto’s Open Data Portal. This data set focuses on information about occupancy and capacity in Toronto’s shelter system, as well as provides details about locations, programs, services, and dates. This data is collected and published by the City of Toronto in order to track shelter use and the demand for shelters over time. For this analysis, the main data of interest is occupied_beds, which represents the number of beds an individual shelter utilizes daily. The analysis was performed using the statistical programming language, R (R Core Team 2025). To prepare the data, average occupancy rates were grouped per month, and calculated across shelter systems. The missing data for occupied beds was excluded. These monthly averages were then used to compare patterns of occupancy over the first third of the year.
+# Methods {#sec-data}
+
+## Data
+
+This paper uses data from the City of Toronto’s Daily Shelter & Overnight Service Occupancy & Capacity datasets, from 2025 and 2026, which is available through Toronto’s Open Data Portal (Toronto Shelter & Support Services, 2026). These datasets focus on information about occupancy and capacity in Toronto’s shelter system, as well as provides details about locations, programs, services, and dates. This data is collected and published by the City of Toronto in order to track shelter use and the demand for shelters over time. In this analysis, the primary analysis variables are occupied beds and occupancy rates by shelter. Occupied beds represents the number of beds an individual shelter utilizes daily, while occupancy rate reflects the utilization of an individual shelter's capacity. The analysis was performed using the statistical programming language, R [@citeR]. To prepare the data, average occupancy rates and occupied beds were grouped per month, and calculated across shelter systems. These monthly averages were then used to compare patterns of occupancy over the first third of 2026, and throughout the year of 2025.
 
 
 ## Measurement
 	
-Homelessness is difficult to measure directly as it is not always documented. Homelessness can be seen through many different forms, not just shelter occupancy. This results in policymakers depending on proxy measures to gain a broader understanding of homelessness (Bird et al., 2025). In this paper specifically, we use shelter occupancy as the indicator of pressure on the Toronto shelter system. 
+This data is collected by the Toronto Shelter and Support Services (TSSS) department, which uses a database called Shelter Management Information System (SMIS), where all shelters input their information about occupancy and capacity daily. In this paper specifically, we investigate shelter occupancy measured as number of beds and proportion of beds occupied as the indicator of pressure on the Toronto shelter system.  
 
-The variable occupied_beds, corresponds to the number of occupied beds Toronto's shelter system per day. The variable occupancy_rate_beds corresponds to the proportion of available beds at a given shelter that are occupied during a given day. If the occupancy_rate_beds is high it indicates that the number of beds available may not be servicing the need. In this paper, monthly averages of occupied beds are used to analyse shelter use over time and any evidence of seasonality. The occupancy rate summary statistics are used to assess the use of available shelter beds and suggest whether the need is being addressed.
+## Variables
 
-This data offers insight into the need for shelter infrastructure in Toronto, but does not explain the extent of people experiencing homelessness. This is due to the fact that the data set does not encompass those who choose to go unsheltered, or do not have access to shelters in Toronto. Consequently, shelter occupancy is simply used as a measure of shelter system usage, not homelessness in Toronto. 
+Occupied beds and occupied rates by month and individual shelter location are analysed. All missing values were omitted for the calculations and figures.  In this paper, monthly averages of occupied beds are used to analyse shelter use over time and any evidence of seasonality. The occupancy rate is helpful in assessing the use of available shelter beds and suggest whether the demand is being addressed.
 
-## Outcome variables
+# Results
 
-```{r echo=FALSE}
-analysis_data |>
+The initial analysis indicates high shelter occupancy rates for the first third of 2026 and 2025 (Table @tbl-occupied-bed and Table @tbl-occupied-beds, respectively). While there is some variation between months, there are no apparent fluctuations or patterns. Occupancy rates remain consistently high across all months and all sites. Although the data is only available until May of 2026, comparing January to May across 2025 and 2026 indicates less shelter utilization in 2026. 
+
+```{r}
+#| label: tbl-occupied-bed
+#| tbl-cap: Average occupied beds and occupancy rate by month in 2026.
+
+data2026 |>
+  rename("Month" = month_label) %>%
   mutate(occupancy_month = month(
-    occupancy_date,
+    my(Month),
     label = TRUE,
     abbr = FALSE
   )) |>
-  arrange(month(occupancy_date)) |>
-  drop_na(occupied_beds) |>
-  summarise(number_occupied = mean(occupied_beds),
-            .by = occupancy_month) |>
+  arrange(month(my(Month))) |>
+  drop_na(OCCUPIED_BEDS) |>
+  summarise("Occupied Beds" = mean(OCCUPIED_BEDS),
+            "Occupancy Rate" = mean(OCCUPANCY_RATE_BEDS),
+            .by = Month) |>
+  tt() |> 
+  format_tt(escape = TRUE)
+
+```
+
+```{r}
+#| label: tbl-occupied-beds
+#| tbl-cap: Average occupied beds and occupancy rate by month in 2025.
+data2025 |>
+  rename("Month" = month_label) %>%
+  mutate(occupancy_month = month(
+    my(Month),
+    label = TRUE,
+    abbr = FALSE
+  )) |>
+  arrange(month(my(Month))) |>
+  drop_na(OCCUPIED_BEDS) |>
+  summarise("Occupied Beds" = mean(OCCUPIED_BEDS),
+            "Occupancy Rate" = mean(OCCUPANCY_RATE_BEDS),
+            .by = Month) |>
   tt() |> 
   format_tt(escape = TRUE)
 ```
 
+Table @tbl-occupied-bed. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for the first third of 2026. The average occupied beds range from approximately 39 to 41 across all shelters, with the highest average in May. The total average occupancy rate across all 5 months is approximately 93.98%.
 
-Table 1. Average number of occupied shelter beds each month per shelter system in Toronto. This table shows the average number of shelter beds, across many shelter systems, that were occupied in the first third of this year. The average occupied beds range from approximately 39 to 41 for each shelter, with the highest average in May.
-
-Add graphs, tables and text. Use sub-sub-headings for each outcome variable or update the subheading to be singular.
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-
-Talk way more about it. 
-
-## Predictor variables
-
-Add graphs, tables and text.
-
-Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
+Table @tbl-occupied-beds. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for 2025. The average occupied beds range from approximately 39 to 46 across all shelters, with the highest average in March. The total average occupancy rate in 2025 was approximately 95.14%.
 
 
 
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-2026
+
+plot_data <- data2026 %>%
+  mutate(
+    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
+    month = floor_date(OCCUPANCY_DATE, "month"),
+    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
+  ) %>%
+  filter(!is.na(OCCUPIED_BEDS)) %>%
+  mutate(month_label = format(month, "%b %Y"))
+
+# Identify outliers (beyond 1.5x IQR) per month
+outlier_data <- plot_data %>%
+  group_by(month_label) %>%
+  mutate(
+    q1 = quantile(OCCUPIED_BEDS, 0.25),
+    q3 = quantile(OCCUPIED_BEDS, 0.75),
+    iqr = q3 - q1,
+    is_outlier = OCCUPIED_BEDS < (q1 - 1.5 * iqr) | OCCUPIED_BEDS > (q3 + 1.5 * iqr)
+  ) %>%
+  filter(is_outlier)
+
+ # Plot
+ggplot(plot_data, aes(x = month_label, y = OCCUPIED_BEDS, group = month_label)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.4, outlier.shape = NA) +
+  geom_point(
+    data = outlier_data,
+    aes(colour = LOCATION_NAME, group = NULL),
+    size = 2.5, alpha = 0.4
+  ) +
+  guides(fill = "none") +
+  labs(
+    title = "Distribution of Occupied Beds per Month in 2026",
+    x = "Month",
+    y = "Occupied Beds",
+    colour = "Outlier Location"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "right",
+    legend.text = element_text(size = 7),
+    legend.key.size = unit(0.5, "cm")
+  )
+```
+
+
+@fig-2026. Boxplots showing the distribution of occupied shelter beds across each month in 2026 until May. Each box represents the interquartile range and the median value.  The whiskers show the range of occupancy values, and each dot represents the number of occupied beds on a given day for that month, at a specific location. 
+
+
+Figures 1 and 2 indicate a lack of obvious seasonality and show that although the average occupied beds are approximately 39 to 46, there is a large range in capacity across the shelters with some accommodating as many as several hundred occupants. Regardless of number of occupants capacity remains high. In figure 2, July stands out as having the lowest median number of occupied beds with the larger capacity shelters demonstrating less utilization than other months as reflected by the outliers. 
 
 
 
 
+```{r}
+#| warning: false
+#| message: false
+#| label: fig-2025
+
+data2025 <- read_csv("../data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv")
+
+data2025 <- data2025 %>%
+  mutate(
+    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
+    month = floor_date(OCCUPANCY_DATE, "month"),
+    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
+  ) %>%
+  filter(!is.na(OCCUPIED_BEDS)) %>%
+  mutate(month_label = format(month, "%b %Y"))
+
+
+
+# Identify outliers (beyond 1.5x IQR) per month
+outlier_data <- data2025 %>%
+  group_by(month_label) %>%
+  mutate(
+    q1 = quantile(OCCUPIED_BEDS, 0.25),
+    q3 = quantile(OCCUPIED_BEDS, 0.75),
+    iqr = q3 - q1,
+    is_outlier = OCCUPIED_BEDS < (q1 - 1.5 * iqr) | OCCUPIED_BEDS > (q3 + 1.5 * iqr)
+  ) %>%
+  filter(is_outlier)
+
+# Plot
+data2025 %>%
+  mutate(month_label = factor(month_label, levels = format(my(sort(unique(month_label))), "%b %Y"))) %>%
+ggplot(aes(x = month_label, y = OCCUPIED_BEDS, group = month_label)) +
+  geom_boxplot(fill = "steelblue", alpha = 0.4, outlier.shape = NA) +
+  geom_point(
+    data = outlier_data,
+    aes(colour = LOCATION_NAME, group = NULL),
+    size = 2.5, alpha = 0.4
+  ) +
+  guides(fill = "none") +
+  labs(
+    title = "Distribution of Occupied Beds per Month in 2025",
+    x = "Month",
+    y = "Occupied Beds",
+    colour = "Outlier Location"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "right",
+    legend.text = element_text(size = 7),
+    legend.key.size = unit(0.5, "cm")
+  )
+```
+@fig-2025. Boxplots showing the distribution of occupied shelter beds across each month in 2025. Each box represents the interquartile range and the median value.  The whiskers show the range of occupancy values, and the dots correspond to the high occupancy shelter locations, which contain values greater than 1.5xIQR.  
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Occupancy Patterns {#sec-first-point}
 
-The results show that the average number of occupied beds have remained relatively stable so far this year.  The average occupancy per shelter system was similar across each month, ranging from about 39.8 beds in February to 41.3 beds in May. This stability shows that the use of shelters in Toronto has been constant through the first third of the year. Occupancy levels did not show any large increases or decreases but there were slight changes between months. As a result, the findings suggest that demand for shelter services is high regardless of the season.
+As the results reveal minimal variation in occupied beds in 2025 and so far in 2026, seasonal patterns are not apparent but likely not detectable. Due to the occupancy rates remaining consistently high, a continuous demand for shelter space is clear, resulting in weather related need to go unseen. These findings suggest the possibility that Toronto does not have adequate shelter supply, as the demand remains high regardless of the season. Although these results offer valuable insight into the need for shelter infrastructure in Toronto since the resources are being utilized, utilization does not represent the extent of people experiencing homelessness and additional studies would be necessary to fill this gap. Therefore, shelter occupancy patterns can only reinforce the need for shelter and guide decisions on increasing capacity, rather than estimating the prevalence of homelessness in Toronto. 
 
+## Shelter Capacity
 
-## Second discussion point
+The average occupancy rate was above 93% in both 2025 and 2026 indicating that Toronto's shelter system was functioning near full capacity, limiting their ability to respond to increases in need. Figures 1 and 2 reveal that the pressure on Toronto's shelter system is not evenly distributed across all shelter locations. The Willowdale Centre, reacurring in both figures as an outlier, indicates they faced a more fluctuating demand in 2025. Figure 2 also shows increased variation in the Willowdale Centre occupancy during July, which is the only obvious difference between the months. One likely reason for this is that July 2025 was recorded as the third warmest July (Copernicus Climate Change Service, 2025), although it is not clear why variation is not also seen at the other shelter locations. This shows that the effect of extreme heat patters on shelter use may have been detectable in this dataset because people may have chosen to sleep outside instead of seek shelter. 
 
-The average occupancy rate in the first third of the year was approximately 95.09%. This indicates that the Toronto shelter system functioned near full capacity for most of the time period analyzed. Around 100% occupancy levels indicate that the shelter system has little or no capacity to accommodate increases in demand. The constantly high occupancy rates also explain why there was minimal relation to changing seasons in the data. There may be some seasonal variation in demand for shelter, but it is hard to determine when shelters are already operating near full capacity throughout the year. Occupancy levels stay relatively constant even with fluctuations in overall need if available shelter beds are consistently filled. Consequently, results may indicate that the number of shelter beds available in Toronto does not meet the level of demand in the shelter system.
+## Policy Implications
+Policy challenges are a key aspect that contribute to homelessness and affordable housing. This paper mainly focuses on the impact different seasons have on shelter occupancy, but government funding and housing availability are also major contributors. The federal government introduced the Reaching Home program in 2019, to reduce homelessness in Canada. They have invested $5 billion over nine years (2019-2028) to focus on specific communities experiencing homelessness. As this analysis revealed shelter occupancy rates have remained high, this plan is not sufficient enough to successfully mitigate homelessness on a broader scale in cities with large populations, like Toronto. To solve this problem it is valuable to look at other cities homelessness measures that have been successful. New York has a Homeless Bill of Rights that gives everyone a right to shelter. Incorporating policies like this one would help more people in Toronto gain access to shelter, and conversely increase the accuracy of the recorded data in order to improve homelessness rates in the future. 
 
-## Third discussion point
+## Weaknesses and Next Steps
 
-## Weaknesses and next steps
-
-Although this analysis provides an understanding of trends regarding shelter occupancy in Toronto, many limitations also arise. Firstly, the dataset only records the individuals who are able to access the shelter system in Toronto and does not include individuals who choose to stay unsheltered or who cannot access shelter. This means that shelter occupancy should not be viewed as a comprehensive measure of homelessness in Toronto. Secondly, this analysis relied on monthly averages during the first five months of the year. Further studies could investigate longer periods of occupancy patterns in order to more accurately evaluate trends and potential seasonal variation. Additionally, other studies could examine differences by shelter type, location or demographic group within Toronto's shelter system to more effectively mitigate the demand for shelter.
+Although this analysis provides an understanding of trends regarding shelter occupancy in Toronto, many limitations also arise. Firstly, the dataset does not encompass the individuals who are unable to access shelters in Toronto due to capacity issues, transportation, safety or other reasons. The dataset also does not include individuals who choose to stay unsheltered. This means that shelter occupancy should not be viewed as a comprehensive measure of homelessness in Toronto. Secondly, this analysis relied on monthly averages during 2025 and the first five months of 2026. Further studies could investigate longer periods of occupancy patterns in order to more accurately evaluate trends and potential seasonal variation. Additionally, other studies could examine differences by shelter type, location or demographic group within Toronto's shelter system to more effectively mitigate the demand for shelter.
 
 \newpage
-
-\appendix
-
-# Appendix {-}
-
 
 
 \newpage
