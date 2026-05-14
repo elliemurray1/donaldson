@@ -124,9 +124,9 @@ data2025 |>
   format_tt(escape = TRUE)
 ```
 
-@tbl-occupied-bed. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for the first third of 2026. The average occupied beds range from approximately 40 to 41 across all shelters, with the highest average in May. The total average occupancy rate across all 5 months is approximately 93.8%.
+Table 1. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for the first third of 2026. The average occupied beds range from approximately 40 to 41 across all shelters, with the highest average in May. The total average occupancy rate across all 5 months is approximately 93.8%.
 
-@tle-occupied-beds. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for 2025. The average occupied beds range from approximately 39 to 46 across all shelters, with the highest average in March. The total average occupancy rate in 2025 was approximately 95.25%.
+Table 2. The average number of shelter beds and occupancy rates across all shelter systems in Toronto by month, for 2025. The average occupied beds range from approximately 39 to 46 across all shelters, with the highest average in March. The total average occupancy rate in 2025 was approximately 95.25%.
 
 
 ``` {r}
@@ -135,7 +135,7 @@ data2025 |>
 #| echo: false
 #| label: fig-2026
 #| fig-cap: Distribution of occupied beds per Month in 2026.
-#| 
+
 plot_data <- data2026 %>%
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
@@ -187,7 +187,7 @@ ggplot(plot_data, aes(x = month_label, y = OCCUPIED_BEDS, group = month_label)) 
   )
 ```
 
-@fig-2026. Boxplots showing the distribution of occupied shelter beds across each month in 2026 until May. Each box represents the interquartile range and the median value.  The whiskers show the range of non outlier occupancy values. The black dots represent the number of occupied beds on a given day, for a specific shelter location in their corresponding month, while the coloured dots represent outlier observations, at a specific location. 
+Figure 1. Boxplots showing the distribution of occupied shelter beds across each month in 2026 until May. Each box represents the interquartile range and the median value.  The whiskers show the range of non outlier occupancy values. The black dots represent the number of occupied beds on a given day, for a specific shelter location in their corresponding month, while the coloured dots represent outlier observations, at a specific location. 
 
 
 Figures 1 and 2 indicate a lack of obvious seasonality and show that although the average occupied beds are approximately 40 to 46, there is a large range in capacity across the shelters with some accommodating as many as several hundred occupants. Regardless of number of occupants capacity remains high. In figure 2, July stands out as having the lowest median number of occupied beds with the larger capacity shelters demonstrating less utilization than other months as reflected by the outliers. 
@@ -267,7 +267,7 @@ data2025 %>%
 ```
 
 
-@fig-2025. Boxplots showing the distribution of occupied shelter beds across each month in 2025. Each box represents the interquartile range and the median value.  The whiskers show the range of non outlier occupancy values. The black dots represent the number of occupied beds on a given day, for a specific shelter location in their corresponding month, while the coloured dots represent outlier observations, at a specific location. 
+Figure 2. Boxplots showing the distribution of occupied shelter beds across each month in 2025. Each box represents the interquartile range and the median value.  The whiskers show the range of non outlier occupancy values. The black dots represent the number of occupied beds on a given day, for a specific shelter location in their corresponding month, while the coloured dots represent outlier observations, at a specific location. 
 
 # Discussion
 
