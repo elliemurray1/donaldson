@@ -28,23 +28,23 @@ library(here)
 data2025 <- read_csv(here("data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv"))
 data2026 <- read_csv(here("data/Daily shelter overnight occupancy (4).csv"))
 
-data2026 <- data2026 %>%
+data2026 <- data2026 |>
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
     month = floor_date(OCCUPANCY_DATE, "month"),
     OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) %>%
-  filter(!is.na(OCCUPIED_BEDS)) %>%
+  ) |>
+  filter(!is.na(OCCUPIED_BEDS)) |>
   mutate(month_label = format(month, "%b %Y"))
 
 
-data2025 <- data2025 %>%
+data2025 <- data2025 |>
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
     month = floor_date(OCCUPANCY_DATE, "month"),
     OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) %>%
-  filter(!is.na(OCCUPIED_BEDS)) %>%
+  ) |>
+  filter(!is.na(OCCUPIED_BEDS)) |>
   mutate(month_label = format(month, "%b %Y"))
 ```
 
@@ -89,7 +89,7 @@ The initial analysis indicates high shelter occupancy rates for the first third 
 #| tbl-cap: Average occupied beds and occupancy rate by month in 2026.
 
 data2026 |>
-  rename("Month" = month_label) %>%
+  rename("Month" = month_label) |>
   mutate(occupancy_month = month(
     my(Month),
     label = TRUE,
@@ -109,7 +109,7 @@ data2026 |>
 #| label: tbl-occupied-beds
 #| tbl-cap: Average occupied beds and occupancy rate by month in 2025.
 data2025 |>
-  rename("Month" = month_label) %>%
+  rename("Month" = month_label) |>
   mutate(occupancy_month = month(
     my(Month),
     label = TRUE,
@@ -136,27 +136,27 @@ Table 2. The average number of shelter beds and occupancy rates across all shelt
 #| label: fig-2026
 #| fig-cap: Distribution of occupied beds per Month in 2026.
 
-plot_data <- data2026 %>%
+plot_data <- data2026 |>
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
     month = floor_date(OCCUPANCY_DATE, "month"),
     OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) %>%
-  filter(!is.na(OCCUPIED_BEDS)) %>%
+  ) |>
+  filter(!is.na(OCCUPIED_BEDS)) |>
   mutate(month_label = format(month, "%b %Y"))
 
 # Identify outliers (beyond 1.5x IQR) per month
-outlier_data <- plot_data %>%
-  group_by(month_label) %>%
+outlier_data <- plot_data |>
+  group_by(month_label) |>
   mutate(
     q1 = quantile(OCCUPIED_BEDS, 0.25),
     q3 = quantile(OCCUPIED_BEDS, 0.75),
     iqr = q3 - q1,
     is_outlier = OCCUPIED_BEDS < (q1 - 1.5 * iqr) |
       OCCUPIED_BEDS > (q3 + 1.5 * iqr)
-  ) %>%
+  ) |>
   filter(is_outlier)
-non_outlier_data <- plot_data %>%
+non_outlier_data <- plot_data |>
   anti_join(outlier_data, by = names(plot_data))
 
  # Plot
@@ -203,37 +203,37 @@ Figures 1 and 2 indicate a lack of obvious seasonality and show that although th
 
 data2025 <- read_csv("../data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv")
 
-data2025 <- data2025 %>%
+data2025 <- data2025 |>
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
     month = floor_date(OCCUPANCY_DATE, "month"),
     OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) %>%
-  filter(!is.na(OCCUPIED_BEDS)) %>%
+  ) |>
+  filter(!is.na(OCCUPIED_BEDS)) |>
   mutate(month_label = format(month, "%b %Y"))
 
 # Identify outliers (beyond 1.5x IQR) per month
-outlier_data <- data2025 %>%
-  group_by(month_label) %>%
+outlier_data <- data2025 |>
+  group_by(month_label) |>
   mutate(
     q1 = quantile(OCCUPIED_BEDS, 0.25),
     q3 = quantile(OCCUPIED_BEDS, 0.75),
     iqr = q3 - q1,
     is_outlier = OCCUPIED_BEDS < (q1 - 1.5 * iqr) |
       OCCUPIED_BEDS > (q3 + 1.5 * iqr)
-  ) %>%
+  ) |>
   filter(is_outlier)
 
-non_outlier_data <- data2025 %>%
+non_outlier_data <- data2025 |>
   anti_join(outlier_data, by = names(data2025))
 
-data2025 %>%
+data2025 |>
   mutate(
     month_label = factor(
       month_label,
       levels = format(sort(unique(month)), "%b %Y")
     )
-  ) %>%
+  ) |>
   
   # Plot
   ggplot(aes(x = month_label, y = OCCUPIED_BEDS, group = month_label)) +
