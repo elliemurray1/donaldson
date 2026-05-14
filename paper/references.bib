@@ -9,71 +9,169 @@
     url = {https://www.R-project.org/},
   }
   
-  
-@Article{thereferencecanbewhatever,
-    title = {Welcome to the {tidyverse}},
-    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
-    year = {2019},
-    journal = {Journal of Open Source Software},
-    volume = {4},
-    number = {43},
-    pages = {1686},
-    doi = {10.21105/joss.01686},
-  }  
-  
-  
-@Manual{citeLahman,
-    title = {{Lahman: Sean `Lahman' Baseball Database}},
-    author = {Michael Friendly and Chris Dalzell and Martin Monkman and Dennis Murphy},
-    year = {2020},
-    note = {R package version 8.0-0},
-    url = {https://CRAN.R-project.org/package=Lahman},
-  }  
-  
-  
-@article{gebru2021datasheets,
-  title={Datasheets for datasets},
-  author={Gebru, Timnit and Morgenstern, Jamie and Vecchione, Briana and Vaughan, Jennifer Wortman and Wallach, Hanna and Iii, Hal Daum{\'e} and Crawford, Kate},
-  journal={Communications of the ACM},
-  volume={64},
-  number={12},
-  pages={86--92},
-  year={2021},
-  publisher={ACM New York, NY, USA}
-}
-
-@Misc{rstanarm,
-    title = {{rstanarm: {Bayesian} applied regression modeling via {Stan}}},
-    author = {Ben Goodrich and Jonah Gabry and Imad Ali and Sam Brilleman},
-    note = {R package version 2.21.3},
-    year = {2022},
-    url = {https://mc-stan.org/rstanarm/},
-  }
-  
-@Manual{palmerpenguins,
-    title = {{palmerpenguins: Palmer Archipelago (Antarctica) penguin data}},
-    author = {Allison Marie Horst and Alison Presmanes Hill and Kristen B Gorman},
-    year = {2020},
-    note = {R package version 0.1.0},
-    doi = {10.5281/zenodo.3960218},
-    url = {https://allisonhorst.github.io/palmerpenguins/},
-  }
-  
-  
-@book{tellingstories,
+@book{tellingstorieswithdata,
     title = {Telling Stories with Data},
     author = {Rohan Alexander},
     year = {2023},
     publisher = {Chapman; Hall/CRC},
-    url = {https://tellingstorieswithdata.com/}
-  }  
+    url = {https://tellingstorieswithdata.com/},
+  }
   
-  
+@article{tidyverse,
+  author = {Wickham, Hadley and Averick, Mara and Bryan, Jennifer and Chang, Winston and 
+            D'Agostino McGowan, Lucy and François, Romain and Grolemund, Garrett and 
+            Hayes, Alex and Henry, Lionel and Hester, Jim and Kuhn, Max and Pedersen, 
+            Thomas Lin and Miller, Evan and Bache, Stephan Milton and Müller, Kirill and 
+            Ooms, Jeroen and Robinson, David and Seidel, Dana Paige and Spinu, Vitalie and 
+            Takahashi, Kohske and Vaughan, Davis and Wilke, Claus and Woo, Kara and Yutani, Hiroaki},
+  title = {Welcome to the tidyverse},
+  journal = {Journal of Open Source Software},
+  year = {2019},
+  volume = {4},
+  number = {43},
+  pages = {1686},
+  doi = {10.21105/joss.01686},
+}
 
-@Manual{shelter,
-    title = {Deaths of Shelter Residents},
-    author = {{Toronto Shelter & Support Services}},
-    year = {2024},
-    note = {As accessed 2024-10-02.},
-    url = {https://open.toronto.ca/dataset/deaths-of-shelter-residents/},
-  }  
+@book{ggplot2,
+  author = {Wickham, Hadley},
+  title = {ggplot2: Elegant Graphics for Data Analysis},
+  publisher = {Springer-Verlag New York},
+  year = {2016},
+  url = {https://ggplot2.tidyverse.org},
+}
+
+@Manual{opendatatoronto,
+  title = {opendatatoronto: Access the City of Toronto Open Data Portal},
+  author = {Sharla Gelfand},
+  year = {2022},
+  note = {R package version 0.1.5},
+  url = {https://CRAN.R-project.org/package=opendatatoronto},
+}
+
+
+@Manual{ggrepel,
+  title = {ggrepel: Automatically Position Non-Overlapping Text Labels with 'ggplot2'},
+  author = {Kamil Slowikowski},
+  year = {2026},
+  note = {R package version 0.9.8.9999},
+  url = {https://github.com/slowkow/ggrepel},
+}
+
+
+@Manual{magrittr,
+  title = {magrittr: A Forward-Pipe Operator for R},
+  author = {Stefan Milton Bache and Hadley Wickham},
+  year = {2026},
+  note = {R package version 2.0.5},
+  url = {https://magrittr.tidyverse.org}
+}
+
+@Manual{tinytable,
+  title = {tinytable: Simple and Configurable Tables in 'HTML', 'LaTeX', 'Markdown', 'Word', 'PNG', 'PDF', and 'Typst' Formats},
+  author = {Vincent Arel-Bundock},
+  year = {2024},
+  note = {R package version 0.16},
+  url = {https://vincentarelbundock.github.io/tinytable/},
+}
+
+@misc{TorontoSNA2025,
+  author = {City of Toronto},
+  title = {Street Needs Assessment},
+  year = {2025},
+  url = {https://www.toronto.ca/community-people/housing-shelter/homeless-help/about-torontos-shelter-system/street-needs-assessment},
+}
+
+
+@misc{CBC,
+  author = {Draaisma, Muriel},
+  month = {07},
+  title = {Toronto's unhoused population reaches 'crisis' level, more than doubling in 3 years: survey},
+  url = {https://www.cbc.ca/news/canada/toronto/street-needs-assessment-homeless-population-toronto-1.7580073},
+  year = {2025},
+  organization = {CBC}
+}
+
+@article{bird,
+  author = {Bird, Yoshi and Grobe, Sarah and Arnold, Michael and Rogers, Sean and Fudolig, Mikaela and Zimmerman, Julia and Danforth, Christopher and Dodds, Peter Sheridan},
+  month = {01},
+  pages = {1-31},
+  publisher = {University of Western Ontario Libraries},
+  title = {An Assessment of Measuring Local Levels of Homelessness Through Proxy Social Media Signals},
+  doi = {10.5206/ijoh.2023.3.16467},
+  urldate = {2025-01-10},
+  volume = {5},
+  year = {2025},
+  journal = {International Journal on Homelessness}
+}
+
+@misc{canada2024housingreport,
+  author = {Canada, Infrastructure},
+  title = {Housing, Infrastructure and Communities Canada - Shelter Capacity Report 2024},
+  url = {https://housing-infrastructure.canada.ca/homelessness-sans-abri/reports-rapports/shelter-cap-hebergement-2024-eng.html},
+  year = {2024},
+  organization = {Canada.ca}
+}
+
+
+@misc{2016_housing,
+  author = {Housing, Infrastructure and Communities Canada},
+  title = {Housing, Infrastructure and Communities Canada - The National Shelter Study - Emergency shelter use in Canada 2005 to 2016},
+  url = {https://housing-infrastructure.canada.ca/homelessness-sans-abri/reports-rapports/shelter-study-national-etude-refuge-2005-2016-eng.html},
+  year = {2016},
+  organization = {Canada.ca}
+}
+
+@misc{budgetnotes2024,
+  author       = {Tanner, Gordon},
+  title        = {Toronto Shelter and Support Services},
+  year         = {2024},
+  url          = {https://www.toronto.ca/wp-content/uploads/2024/04/9779-2024-Public-Book-TSSS-V1.pdf}
+}
+
+
+@misc{_2026_daily,
+  author = {Toronto Shelter & Support Services},
+  title = {Daily Shelter & Overnight Service Occupancy & Capacity},
+  url = {https://open.toronto.ca/dataset/daily-shelter-overnight-service-occupancy-capacity/},
+  year = {2026},
+  organization = {Open Data Toronto}
+}
+
+
+@misc{cityoftoronto_2026_daily,
+  author = {City of Toronto},
+  title = {Daily Shelter & Overnight Service Usage},
+  url = {https://www.toronto.ca/city-government/data-research-maps/research-reports/housing-and-homelessness-research-and-reports/shelter-census/},
+  year = {2026},
+  organization = {City of Toronto}
+}
+
+
+@misc{reachinghome,
+  author = {Canada, Infrastructure},
+  title = {Housing, Infrastructure and Communities Canada - Reaching Home: Canada's Homelessness Strategy},
+  url = {https://housing-infrastructure.canada.ca/homelessness-sans-abri/index-eng.html?utm_source},
+  year = {2019},
+  organization = {Canada.ca}
+}
+
+
+@misc{senatebillny,
+  author = {Comrie,  Leroy },
+  title = {NY State Senate Bill 2025-S4885},
+  url = {https://www.nysenate.gov/legislation/bills/2025/S4885},
+  year = {2025},
+  organization = {NYSenate.gov}
+}
+
+
+@misc{climatechange,
+  author = {, Copernicus Climate Change Service},
+  title = {Copernicus: Third-warmest July marks slight respite from record global temperatures | Copernicus},
+  url = {https://climate.copernicus.eu/copernicus-third-warmest-july-marks-slight-respite-record-global-temperatures},
+  year = {2020},
+  organization = {Copernicus.eu}
+}
+
+  
