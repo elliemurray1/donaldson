@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from the City of Toronto's Daily Shelter & Overnight Service Occupancy & Capacity datasets (2025-26). Makes a new column to group the daily data by month for tables and figures.
+# Purpose: Downloads, cleans, and saves the data from the City of Toronto's Daily Shelter & Overnight Service Occupancy & Capacity datasets (2025-26). Makes a new column to group the daily data by month for tables and figures.
 # Author: Ellie Murray 
 # Date: 7 May 2026
 
