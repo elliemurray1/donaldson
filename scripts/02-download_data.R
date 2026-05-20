@@ -1,11 +1,7 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
+# Purpose: Downloads and saves the data from the City of Toronto's Daily Shelter & Overnight Service Occupancy & Capacity datasets (2025-26). Makes a new column to group the daily data by month for tables and figures.
 # Author: Ellie Murray 
 # Date: 7 May 2026
-# Contact: ellie.murray@dal.ca
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
 
 
 #### Workspace setup ####
@@ -31,13 +27,8 @@ data2026 <- data2026 %>%
   mutate(month_label = format(month, "%b %Y"))
 
 
-#dataset 2024
-data2024 <- read_csv("data/daily-shelter-overnight-service-occupancy-capacity-2024.csv")
-
-
 #dataset 2025
 data2025 <- read_csv("data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv")
-
 
 
 data2025 <- data2025 %>%
