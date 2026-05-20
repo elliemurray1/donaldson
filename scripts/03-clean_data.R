@@ -1,11 +1,7 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
+# Purpose: Cleans the original raw data from 2026 to make preliminary table 
 # Author: Ellie Murray
-# Date: [...UPDATE THIS...]
-# Contact: [...UPDATE THIS...]
-# License: 
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+
 
 #### Workspace setup ####
 library(tidyverse)
