@@ -9,14 +9,11 @@ library(opendatatoronto)
 library(tidyverse)
 library(ggrepel)
 library(magrittr)
-
-data <- read_csv("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/21c83b32-d5a8-4106-a54f-010dbe49f6f2/resource/ffd20867-6e3c-4074-8427-d63810edf231/download/Daily%20shelter%20overnight%20occupancy.csv")
-
-write_csv(data, "data/01-raw_data/data.csv")
+library(here)
 
 
 #dataset 2026
-data2026 <- read_csv("Daily shelter overnight occupancy (4).csv")
+data2026 <- read_csv(here("data/01-raw_data/daily-shelter-data-2026.csv"))
 data2026 <- data2026 %>%
   mutate(
     OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
@@ -28,7 +25,7 @@ data2026 <- data2026 %>%
 
 
 #dataset 2025
-data2025 <- read_csv("data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv")
+data2025 <- read_csv(here("data/01-raw_data/daily-shelter-data-2025.csv"))
 
 
 data2025 <- data2025 %>%
@@ -41,7 +38,9 @@ data2025 <- data2025 %>%
   mutate(month_label = format(month, "%b %Y"))
 
 
-
+#### Save data ####
+write_csv(data2025, "data/02-analysis_data/shelter_analysis_data_2025.csv")
+write_csv(data2026, "data/02-analysis_data/shelter_analysis_data_2026.csv")
 
 
 
