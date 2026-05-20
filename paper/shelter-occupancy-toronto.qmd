@@ -24,28 +24,8 @@ library(tinytable)
 library(tidyverse)
 library(here)
 
-
-data2025 <- read_csv(here("data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv"))
-data2026 <- read_csv(here("data/Daily shelter overnight occupancy (4).csv"))
-
-data2026 <- data2026 |>
-  mutate(
-    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
-    month = floor_date(OCCUPANCY_DATE, "month"),
-    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) |>
-  filter(!is.na(OCCUPIED_BEDS)) |>
-  mutate(month_label = format(month, "%b %Y"))
-
-
-data2025 <- data2025 |>
-  mutate(
-    OCCUPANCY_DATE = as.Date(OCCUPANCY_DATE),
-    month = floor_date(OCCUPANCY_DATE, "month"),
-    OCCUPIED_BEDS = as.numeric(OCCUPIED_BEDS)
-  ) |>
-  filter(!is.na(OCCUPIED_BEDS)) |>
-  mutate(month_label = format(month, "%b %Y"))
+data2025 <- read_csv(here("data/02-analysis_data/shelter_analysis_data_2025.csv"))
+data2026 <- read_csv(here("data/02-analysis_data/shelter_analysis_data_2026.csv"))
 ```
 
 \newpage
@@ -200,8 +180,6 @@ Figures 1 and 2 indicate a lack of obvious seasonality and show that although th
 #| message: false
 #| label: fig-2025
 #| fig-cap: Distribution of occupied beds per month in 2025.
-
-data2025 <- read_csv("../data/daily-shelter-overnight-service-occupancy-capacity-2025 (3).csv")
 
 data2025 <- data2025 |>
   mutate(
